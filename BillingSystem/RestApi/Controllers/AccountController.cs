@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Application.RecurlyRepository;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,12 +12,18 @@ namespace RestApi.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
+        private readonly IRecurlyRepo _repository;
         
-        public AccountController()
+        public AccountController(IRecurlyRepo repository)
         {
-            
+            _repository = repository;
         }
-
+        [HttpGet]
+        public IActionResult CreateAccount()
+        {
+            _repository.CreateAccount();
+            return Ok();
+        }
       
     }
 }
