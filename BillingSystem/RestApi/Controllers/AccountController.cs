@@ -9,12 +9,14 @@ namespace RestApi.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class WeatherForecastController : ControllerBase
-    {       
-        public WeatherForecastController()
+    public class AccountController : ControllerBase
+    {
+        
+        public AccountController()
         {
             
         }
 
+      
     }
 }
