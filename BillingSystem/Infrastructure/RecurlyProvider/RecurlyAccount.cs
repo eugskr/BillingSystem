@@ -1,27 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Recurly;
+﻿using Recurly;
 using Recurly.Resources;
+using Domain.Models; 
 
 namespace Infrastructure.RecurlyProvider
 {
-    class RecurlyAccount : IRecurlyAccount
+    class RecurlyAccount : IRecurlyAdapter
     {
         private readonly Client client;
         public RecurlyAccount()
         {
             client = new Client(Settings.Default.ApiKey);
         }
-        public  void CreateAccount()
+        public Account CreateAccount(AccountModel model)
         {
             var accountReq = new AccountCreate()
             {
-                Code = "EU3141",
-                FirstName = "Benjamin",
-                LastName = "Du Monde",
+                Code = model.Code,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
             };
-            Account account = client.CreateAccount(accountReq);
+            return client.CreateAccount(accountReq);
 
         }
     }

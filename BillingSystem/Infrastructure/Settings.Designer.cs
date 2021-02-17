@@ -31,5 +31,14 @@ namespace Infrastructure {
                 return ((string)(this["ApiKey"]));
             }
         }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("BiilingSystemDb")]
+        public string DatabaseName {
+            get {
+                return ((string)(this["DatabaseName"]));
+            }
+        }
     }
 }

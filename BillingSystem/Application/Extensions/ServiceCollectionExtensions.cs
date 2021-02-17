@@ -1,4 +1,4 @@
-﻿using Application.RecurlyRepository;
+﻿using Application.Providers;
 using Microsoft.Extensions.DependencyInjection;
 using Infrastructure.Extensions;
 
@@ -8,7 +8,7 @@ namespace Application.Extensions
     {
         public static IServiceCollection AddRecurlyRepoService(this IServiceCollection services)
         {
-            services.AddTransient<IRecurlyRepo, RecurlyRepo>();
+            services.AddTransient<IBillingPaymentProvider, BillingPaymentProvider>();
             services.AddRecurlyAccountService();
             return services;
         }

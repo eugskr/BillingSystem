@@ -1,10 +1,8 @@
-﻿using Application.RecurlyRepository;
+﻿using Application.Providers;
+using Domain.Models;
+using Infrastructure.Repository;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+
 
 namespace RestApi.Controllers
 {
@@ -12,18 +10,21 @@ namespace RestApi.Controllers
     [Route("[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly IRecurlyRepo _repository;
-        
-        public AccountController(IRecurlyRepo repository)
+        private readonly IBillingPaymentProvider _billingPaymentProvider;
+ 
+
+        public AccountController(IBillingPaymentProvider billingPaymentProvider)
         {
-            _repository = repository;
+            _billingPaymentProvider = billingPaymentProvider;
+           
         }
-        [HttpGet]
-        public IActionResult CreateAccount()
+
+        [HttpPost]
+        public IActionResult CreateAccount(AccountModel model)
         {
-            _repository.CreateAccount();
-            return Ok();
+            return Ok(_billingPaymentProvider.CreateAccount(model));
         }
-      
+
+       
     }
 }
