@@ -7,7 +7,7 @@ namespace Infrastructure.Repository
     {
         private readonly IMongoCollection<T> _collection;
 
-        public DbClient(string colectionName)
+        public DbClient()
         {
             var client = new MongoClient();
             var db = client.GetDatabase(Settings.Default.DatabaseName);
