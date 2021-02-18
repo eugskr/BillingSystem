@@ -6,9 +6,9 @@ namespace Application.Mapper
 {
     public static class AccountResponseMapper
     {
-        public static AccountViewModel ToAccountResponse(this Account requestModel)
+        public static AccountVM ToAccountResponse(this Account requestModel)
         {
-            return new AccountViewModel
+            return new AccountVM
             {
                 Id = requestModel.Id,
                 FirstName = requestModel.FirstName,

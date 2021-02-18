@@ -4,6 +4,6 @@ namespace Application.Providers
 {
     public interface IBillingPaymentProvider
     {
-        AccountViewModel CreateAccount(AccountModel model);
+        AccountVM CreateAccount(AccountModel model);
     }
 }

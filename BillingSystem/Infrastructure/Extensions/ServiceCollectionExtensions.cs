@@ -12,7 +12,7 @@ namespace Infrastructure.Extensions
         public static IServiceCollection AddRecurlyAccountService(this IServiceCollection services)
         {
             
-            services.AddSingleton<IDbClient<AccountViewModel>, DbClient<AccountViewModel>>();
+            services.AddSingleton<IDbClient<AccountVM>, DbClient<AccountVM>>();
             services.AddTransient<IRecurlyAdapter,RecurlyAccount>();
             return services;
         }
