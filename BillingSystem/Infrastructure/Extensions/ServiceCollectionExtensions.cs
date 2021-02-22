@@ -1,19 +1,16 @@
-﻿using Domain.Models;
+﻿using Domain.RepositoryModels;
 using Infrastructure.RecurlyProvider;
 using Infrastructure.Repository;
-
-
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Infrastructure.Extensions
 {
     public static class ServiceCollectionExtensions
     {
-        public static IServiceCollection AddRecurlyAccountService(this IServiceCollection services)
+        public static IServiceCollection AddRecurlyService(this IServiceCollection services)
         {
-            
-            services.AddSingleton<IDbClient<AccountVM>, DbClient<AccountVM>>();
-            services.AddTransient<IRecurlyAdapter,RecurlyAccount>();
+            services.AddSingleton<IDbRepository<Account>, DbRepository<Account>>();
+            services.AddTransient<IRecurlyAdapter,RecurlyAdapter>();
             return services;
         }
     }

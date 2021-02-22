@@ -7,24 +7,29 @@ using Microsoft.AspNetCore.Mvc;
 namespace RestApi.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class AccountController : ControllerBase
     {
-        private readonly IBillingPaymentProvider _billingPaymentProvider;
- 
+        private readonly IBillingPaymentProvider _billingPaymentProvider; 
 
         public AccountController(IBillingPaymentProvider billingPaymentProvider)
         {
-            _billingPaymentProvider = billingPaymentProvider;
-           
+            _billingPaymentProvider = billingPaymentProvider;           
         }
 
         [HttpPost]
-        public IActionResult CreateAccount(AccountModel model)
+        [Route("CreateAccount")]
+        public IActionResult CreateAccount(AccountModel accountModel)
         {
-            return Ok(_billingPaymentProvider.CreateAccount(model));
+            return Ok(_billingPaymentProvider.CreateAccount(accountModel));
         }
 
-       
+        [HttpPost]
+        [Route("CreateSubscription")]
+
+        public IActionResult CreateSubscrption(SubscriptionModel subscriptionModel)
+        {
+            return Ok(_billingPaymentProvider.CreateSubscription(subscriptionModel));
+        }
     }
 }

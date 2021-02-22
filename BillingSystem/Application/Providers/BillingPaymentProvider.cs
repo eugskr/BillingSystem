@@ -1,24 +1,43 @@
 ﻿using Domain.Models;
 using Infrastructure.RecurlyProvider;
-using Application.Mapper;
 using Infrastructure.Repository;
+using Domain.DTOs;
+using Domain.RepositoryModels;
+using AutoMapper;
+using System.Collections.Generic;
 
 namespace Application.Providers
 {
     public class BillingPaymentProvider : IBillingPaymentProvider
     {
         private readonly IRecurlyAdapter _recurlyAdapter;
-        private readonly IDbClient<AccountVM> _dbClient;
-        public BillingPaymentProvider(IRecurlyAdapter recurlyAdapter, IDbClient<AccountVM> dbClient)
+        private readonly IDbRepository<Account> _accountRepository;
+        private readonly IMapper _mapper;
+
+        public BillingPaymentProvider(IRecurlyAdapter recurlyAdapter, IDbRepository<Account> dbClient, IMapper mapper)
         {
             _recurlyAdapter = recurlyAdapter;
-            _dbClient = dbClient;
+            _accountRepository = dbClient;
+            _mapper = mapper;
         }
-        public AccountVM CreateAccount(AccountModel model)
+        public AccountDTO CreateAccount(AccountModel accountModel)
         {
-            var responseModel = _recurlyAdapter.CreateAccount(model);
-            var accountVM = responseModel.ToAccountResponse();
-            _dbClient.AddAccount(accountVM);
+            var responseAccount = _recurlyAdapter.CreateAccount(accountModel);
+            var accountRepository = _mapper.Map<Account>(responseAccount);
+            var accountVM = _mapper.Map<AccountDTO>(accountRepository);
+            _accountRepository.Insert(accountRepository);
+            return accountVM;
+        }
+
+        public AccountDTO CreateSubscription(SubscriptionModel subscriptionModel)
+        {
+            var responseSubscription = _recurlyAdapter.CreateSubscription(subscriptionModel);           
+            var subscriptionVM = _mapper.Map<SubscriptionDTO>(responseSubscription);
+            var account = _accountRepository.GetBy(x => x.Code == subscriptionModel.AccountCode);            
+            account.Subscriptions = account.Subscriptions ?? new List<SubscriptionDTO>();
+            account.Subscriptions.Add(subscriptionVM);
+            _accountRepository.Update(account, account.Id);
+            var accountVM = _mapper.Map<AccountDTO>(account);
             return accountVM;
         }
     }
