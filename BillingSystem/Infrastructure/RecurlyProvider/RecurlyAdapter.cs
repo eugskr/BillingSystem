@@ -1,43 +1,31 @@
 ﻿using Recurly;
 using Recurly.Resources;
-using Domain.Models; 
+using Domain.Models;
+using AutoMapper;
 
 namespace Infrastructure.RecurlyProvider
 {
     class RecurlyAdapter : IRecurlyAdapter
     {
         private readonly Client client;
-        public RecurlyAdapter()
+        private readonly IMapper _mapper;
+
+        public RecurlyAdapter(IMapper mapper)
         {
             client = new Client(Settings.Default.ApiKey);
+            _mapper = mapper;
         }
 
         public Account CreateAccount(AccountModel accountModel)
         {
-            var accountReq = new AccountCreate()
-            {
-                Code = accountModel.Code,
-                FirstName = accountModel.FirstName,
-                LastName = accountModel.LastName,
-            };
-            return client.CreateAccount(accountReq);
+            var accountRequest = _mapper.Map<AccountCreate>(accountModel);
+            return client.CreateAccount(accountRequest);
         }
 
         public Subscription CreateSubscription(SubscriptionModel subscriptionModel)
-        {
-            var subReq = new SubscriptionCreate()
-            {
-                Currency = subscriptionModel.Currency,
-                Account = new AccountCreate()
-                {
-                    Code = subscriptionModel.AccountCode
-
-                },
-                PlanCode = subscriptionModel.PlanCode,
-                UnitAmount = subscriptionModel.Premium,
-                CollectionMethod = "manual"
-            };  
-            return client.CreateSubscription(subReq);
+        {             
+            var subscruptionRequest = _mapper.Map<SubscriptionCreate>(subscriptionModel);
+            return client.CreateSubscription(subscruptionRequest);
         }
        
     }

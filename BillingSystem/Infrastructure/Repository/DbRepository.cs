@@ -42,9 +42,9 @@ namespace Infrastructure.Repository
                 new BsonDocument("_id", id),
                 record);
         }
-        public T GetBy(Expression<Func<T,bool>> predicate)
+        public T GetBy(Expression<Func<T, bool>> predicate)
         {
-            return _collection.Find(predicate).First();
+            return _collection.Find(predicate).FirstOrDefault();
         }
     }
 }

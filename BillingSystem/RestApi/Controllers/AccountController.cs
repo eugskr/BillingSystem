@@ -21,15 +21,17 @@ namespace RestApi.Controllers
         [Route("CreateAccount")]
         public IActionResult CreateAccount(AccountModel accountModel)
         {
-            return Ok(_billingPaymentProvider.CreateAccount(accountModel));
+            return Created(Request?.Path.Value, _billingPaymentProvider.CreateAccount(accountModel));
         }
 
         [HttpPost]
         [Route("CreateSubscription")]
-
-        public IActionResult CreateSubscrption(SubscriptionModel subscriptionModel)
+        public IActionResult CreateSubscription(SubscriptionModel subscriptionModel)
         {
-            return Ok(_billingPaymentProvider.CreateSubscription(subscriptionModel));
+            var accountModel = _billingPaymentProvider.CreateSubscription(subscriptionModel);
+            if (accountModel == null)
+                return BadRequest("Account doesn't exist");
+            return Created(Request?.Path.Value, accountModel);
         }
     }
 }

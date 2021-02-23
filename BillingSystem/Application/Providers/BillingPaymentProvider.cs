@@ -30,10 +30,11 @@ namespace Application.Providers
         }
 
         public AccountDTO CreateSubscription(SubscriptionModel subscriptionModel)
-        {
-            var responseSubscription = _recurlyAdapter.CreateSubscription(subscriptionModel);           
-            var subscriptionVM = _mapper.Map<SubscriptionDTO>(responseSubscription);
-            var account = _accountRepository.GetBy(x => x.Code == subscriptionModel.AccountCode);            
+        {           
+            var account = _accountRepository.GetBy(x => x.Code == subscriptionModel.AccountCode);
+            if (account == null)
+                return null;
+            var subscriptionVM = _mapper.Map<SubscriptionDTO>(_recurlyAdapter.CreateSubscription(subscriptionModel));
             account.Subscriptions = account.Subscriptions ?? new List<SubscriptionDTO>();
             account.Subscriptions.Add(subscriptionVM);
             _accountRepository.Update(account, account.Id);

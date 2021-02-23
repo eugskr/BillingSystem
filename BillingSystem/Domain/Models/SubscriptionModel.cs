@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿
+using System.Text.Json.Serialization;
 
 namespace Domain.Models
 {
     public class SubscriptionModel
     {
-        public string Currency { get; set; }
-        public string AccountCode { get; set; }
+        public string Currency { get; set; }               
+        public string AccountCode { get; set; }        
         public string PlanCode { get; set; }
-        public int Premium { get; set; }
+       
+        [JsonPropertyName("Premium")]
+        public int UnitAmount { get; set; }
     }
 }
