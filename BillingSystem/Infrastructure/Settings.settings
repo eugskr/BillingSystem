@@ -1,0 +1,12 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Infrastructure" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="ApiKey" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">34be718fdb674437bef08e65a8a7c8b2</Value>
+    </Setting>
+    <Setting Name="DatabaseName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">BiilingSystemDb</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
