@@ -11,6 +11,7 @@ namespace Application.Extensions
         {
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddTransient<IBillingPaymentProvider, BillingPaymentProvider>();
+            services.AddTransient<IWebHookNotificationProvider, WebHookNotificationProvider>();
             services.AddRecurlyService();
             return services;
         }
