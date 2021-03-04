@@ -5,6 +5,8 @@ using Domain.DTOs;
 using Domain.RepositoryModels;
 using AutoMapper;
 using System.Collections.Generic;
+using NServiceBus;
+using System.Threading.Tasks;
 
 namespace Application.Providers
 {
@@ -12,20 +14,21 @@ namespace Application.Providers
     {
         private readonly IRecurlyAdapter _recurlyAdapter;
         private readonly IDbRepository<Account> _accountRepository;
-        private readonly IMapper _mapper;
+        private readonly IMapper _mapper;     
 
         public BillingPaymentProvider(IRecurlyAdapter recurlyAdapter, IDbRepository<Account> dbClient, IMapper mapper)
         {
             _recurlyAdapter = recurlyAdapter;
             _accountRepository = dbClient;
-            _mapper = mapper;
+            _mapper = mapper;    
         }
+      
         public AccountDTO CreateAccount(AccountModel accountModel)
         {
             var responseAccount = _recurlyAdapter.CreateAccount(accountModel);
             var accountRepository = _mapper.Map<Account>(responseAccount);
             var accountVM = _mapper.Map<AccountDTO>(accountRepository);
-            _accountRepository.Insert(accountRepository);
+            _accountRepository.Insert(accountRepository);            
             return accountVM;
         }
 

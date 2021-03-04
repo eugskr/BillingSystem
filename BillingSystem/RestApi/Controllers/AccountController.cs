@@ -2,7 +2,7 @@
 using Domain.Models;
 using Infrastructure.Repository;
 using Microsoft.AspNetCore.Mvc;
-
+using System.Threading.Tasks;
 
 namespace RestApi.Controllers
 {
