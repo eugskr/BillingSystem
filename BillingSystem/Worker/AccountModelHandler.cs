@@ -1,11 +1,7 @@
-﻿using Domain.Models;
-using Domain.RepositoryModels;
+﻿using Domain.RepositoryModels;
 using Infrastructure.Repository;
 using NServiceBus;
 using NServiceBus.Logging;
-using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Worker
@@ -18,13 +14,11 @@ namespace Worker
         {
             _dbClient = dbClient;
         }
-        public Task Handle(Account account, IMessageHandlerContext context)
+        public async Task Handle(Account account, IMessageHandlerContext context)
         {
-            log.Info($"Received AccountModel, AccountCode = {account.Code}");
-
-            _dbClient.Insert(account);
-
-            return Task.CompletedTask;
+            log.Info($"Received Account, AccountCode = {account.Code}");
+            await _dbClient.Upsert(account, account.Id);
+            log.Info($"Saved Account in DB, AccountCode = {account.Code}");
         }
     }
 }

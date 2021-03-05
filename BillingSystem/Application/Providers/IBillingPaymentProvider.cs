@@ -1,12 +1,12 @@
 ﻿using Domain.DTOs;
 using Domain.Models;
-using System.Threading.Tasks;
+using Domain.RepositoryModels;
 
 namespace Application.Providers
 {
     public interface IBillingPaymentProvider
     {
-        AccountDTO CreateAccount(AccountModel accountModel);
-        AccountDTO CreateSubscription(SubscriptionModel subscriptionModel);
+        Account CreateAccount(AccountModel accountModel);
+        Account CreateSubscription(SubscriptionModel subscriptionModel);
     }
 }

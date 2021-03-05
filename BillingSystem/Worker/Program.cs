@@ -1,6 +1,9 @@
 ﻿using NServiceBus;
 using System;
 using System.Threading.Tasks;
+using Microsoft.Extensions.DependencyInjection;
+using Infrastructure.Repository;
+using Domain.RepositoryModels;
 
 namespace Worker
 {
@@ -11,17 +14,28 @@ namespace Worker
             Console.Title = "Worker";
 
             var endpointConfiguration = new EndpointConfiguration("Worker");
+            endpointConfiguration.UseTransport<LearningTransport>();
+            //endpointConfiguration.UsePersistence<LearningPersistence>();
 
-            var transport = endpointConfiguration.UseTransport<LearningTransport>();
+            var serviceCollection = new ServiceCollection();
+            serviceCollection.AddScoped<IDbRepository<Account>, DbRepository<Account>>();
 
-            var endpointInstance = await Endpoint.Start(endpointConfiguration)
-                .ConfigureAwait(false);
+            var endpointWithExternallyManagedServiceProvider = EndpointWithExternallyManagedServiceProvider
+            .Create(endpointConfiguration, serviceCollection);
 
-            Console.WriteLine("Press Enter to exit.");
-            Console.ReadLine();
+            using (var serviceProvider = serviceCollection.BuildServiceProvider())
+            {
+                var endpointInstance = await endpointWithExternallyManagedServiceProvider.Start(serviceProvider)
+                   .ConfigureAwait(false);
 
-            await endpointInstance.Stop()
-                .ConfigureAwait(false);
+                Console.WriteLine("Press Enter to exit.");
+                Console.ReadLine();
+
+                await endpointInstance.Stop()
+                    .ConfigureAwait(false);
+            }              
+
+           
         }
     }
 }

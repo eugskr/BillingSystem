@@ -3,7 +3,7 @@ using Domain.WebHookNotificationModels;
 using Infrastructure.RecurlyProvider;
 using Infrastructure.Repository;
 using Microsoft.Extensions.DependencyInjection;
-using System;
+
 
 namespace Infrastructure.Extensions
 {

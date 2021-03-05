@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Application.Extensions;
+using RestApi.Mediators;
 
 namespace RestApi
 {
@@ -27,7 +28,9 @@ namespace RestApi
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {         
-            services.AddApplicationService();
+            services
+                .AddApplicationService()
+                .AddScoped<IBillingPaymentProviderMediator, BillingPaymentProviderMediator>();
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
@@ -48,13 +51,13 @@ namespace RestApi
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
-            app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
             });
+
+            //app.UseAuthorization();
+          
         }
     }
 }

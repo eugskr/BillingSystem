@@ -23,16 +23,13 @@ namespace Application.Providers
             _mapper = mapper;    
         }
       
-        public AccountDTO CreateAccount(AccountModel accountModel)
-        {
-            var responseAccount = _recurlyAdapter.CreateAccount(accountModel);
-            var accountRepository = _mapper.Map<Account>(responseAccount);
-            var accountVM = _mapper.Map<AccountDTO>(accountRepository);
-            _accountRepository.Insert(accountRepository);            
-            return accountVM;
+        public Account CreateAccount(AccountModel accountModel)
+        {            
+            var accountCreated = _mapper.Map<Account>(_recurlyAdapter.CreateAccount(accountModel));                     
+            return accountCreated;
         }
 
-        public AccountDTO CreateSubscription(SubscriptionModel subscriptionModel)
+        public Account CreateSubscription(SubscriptionModel subscriptionModel)
         {           
             var account = _accountRepository.GetBy(x => x.Code == subscriptionModel.AccountCode);
             if (account == null)
@@ -40,9 +37,9 @@ namespace Application.Providers
             var subscriptionVM = _mapper.Map<SubscriptionDTO>(_recurlyAdapter.CreateSubscription(subscriptionModel));
             account.Subscriptions = account.Subscriptions ?? new List<SubscriptionDTO>();
             account.Subscriptions.Add(subscriptionVM);
-            _accountRepository.Update(account, account.Id);
-            var accountVM = _mapper.Map<AccountDTO>(account);
-            return accountVM;
+            return account;
+            //_accountRepository.Update(account, account.Id);
+        
         }
     }
 }
