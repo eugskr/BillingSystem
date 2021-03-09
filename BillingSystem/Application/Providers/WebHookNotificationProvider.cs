@@ -17,7 +17,7 @@ namespace Application.Providers
         {
             _dbClient = dbClient;
         }
-        public void ProcessWithXml(XmlDocument xmlDoc)
+        public PaymentNotificationBase ProcessWithXml(XmlDocument xmlDoc)
         {
             PaymentNotificationBase paymentNotificationModel = null;
             switch (xmlDoc.DocumentElement.Name)
@@ -29,7 +29,8 @@ namespace Application.Providers
                     paymentNotificationModel = DeserializeFromXml<FailedPaymentNotification>(xmlDoc);
                     break;
             }
-            _dbClient.Insert(paymentNotificationModel);
+            return paymentNotificationModel;
+            
 
         }
         private static T DeserializeFromXml<T>(XmlDocument document)

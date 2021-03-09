@@ -37,8 +37,7 @@ namespace Application.Providers
             var subscriptionVM = _mapper.Map<SubscriptionDTO>(_recurlyAdapter.CreateSubscription(subscriptionModel));
             account.Subscriptions = account.Subscriptions ?? new List<SubscriptionDTO>();
             account.Subscriptions.Add(subscriptionVM);
-            return account;
-            //_accountRepository.Update(account, account.Id);
+            return account;           
         
         }
     }

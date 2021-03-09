@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace RestApi.Mediators
 {
-    public interface IBillingPaymentProviderMediator
+    public interface IBillingPaymentMediator
     {
         Task<AccountDTO> CreateAccountAsync(AccountModel accountModel);
         Task<AccountDTO> CreateSubscriptionAsync(SubscriptionModel subscriptionModel);

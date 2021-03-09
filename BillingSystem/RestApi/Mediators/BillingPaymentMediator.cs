@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace RestApi.Mediators
 {
-    public class BillingPaymentProviderMediator: IBillingPaymentProviderMediator
+    public class BillingPaymentMediator: IBillingPaymentMediator
     {
         private readonly IMessageSession _messageSession;
         private readonly IBillingPaymentProvider _billingPaymentProvider;
         private readonly IMapper _mapper;
-        public BillingPaymentProviderMediator(IMessageSession messageSession, IBillingPaymentProvider billingPaymentProvider, IMapper mapper)
+        public BillingPaymentMediator(IMessageSession messageSession, IBillingPaymentProvider billingPaymentProvider, IMapper mapper)
         {
             _messageSession = messageSession;
             _billingPaymentProvider = billingPaymentProvider;

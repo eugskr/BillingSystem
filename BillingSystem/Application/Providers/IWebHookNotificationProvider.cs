@@ -8,6 +8,6 @@ namespace Application.Providers
 {
     public interface IWebHookNotificationProvider
     {
-        public void ProcessWithXml(XmlDocument xmlDoc);
+        public PaymentNotificationBase ProcessWithXml(XmlDocument xmlDoc);
     }
 }

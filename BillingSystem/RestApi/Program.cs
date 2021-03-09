@@ -1,4 +1,5 @@
 using Domain.RepositoryModels;
+using Domain.WebHookNotificationModels;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 using NServiceBus;
@@ -19,7 +20,10 @@ namespace RestApi
                  var endpointConfiguration = new EndpointConfiguration("RestApi");
                  var transport = endpointConfiguration.UseTransport<LearningTransport>();
                  transport.Routing().RouteToEndpoint(
-                    assembly: typeof(Account).Assembly,
+                    assembly: typeof(Domain.RepositoryModels.Account).Assembly,
+                    destination: "Worker");
+                 transport.Routing().RouteToEndpoint(
+                    assembly: typeof(PaymentNotificationBase).Assembly,
                     destination: "Worker");
                  endpointConfiguration.SendOnly();
                  return endpointConfiguration;
