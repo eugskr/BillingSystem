@@ -37,8 +37,14 @@ namespace Application.Providers
             var subscriptionVM = _mapper.Map<SubscriptionDTO>(_recurlyAdapter.CreateSubscription(subscriptionModel));
             account.Subscriptions = account.Subscriptions ?? new List<SubscriptionDTO>();
             account.Subscriptions.Add(subscriptionVM);
-            return account;           
-        
+            return account;                   
+        }
+
+        public Invoice CreateInvoice(InvoiceModel invoiceModel)
+        {
+           var invoiceCollection = _recurlyAdapter.CreateInvoice(invoiceModel);            
+           var invoice = _mapper.Map<Invoice>(invoiceCollection);
+           return invoice;
         }
     }
 }

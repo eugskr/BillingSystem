@@ -21,6 +21,8 @@ namespace RestApi.Mediators
         public async Task ProcessWithXmlAsync(XmlDocument xmlDoc)
         {
            var paymentNotificationModel= _webHookNotificationProvider.ProcessWithXml(xmlDoc);
+            if (paymentNotificationModel == null)
+                return;
            await _messageSession.Send(paymentNotificationModel);
         }
     }

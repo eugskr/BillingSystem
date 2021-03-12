@@ -10,13 +10,11 @@ namespace RestApi.Controllers
     [ApiController]
     [Route("api/[controller]")]
     public class AccountController : ControllerBase
-    {
-        
+    {        
         private readonly IBillingPaymentMediator _billingPaymentMediator;
 
         public AccountController(IBillingPaymentMediator billingPaymentMediator)
-        {
-            
+        {            
             _billingPaymentMediator = billingPaymentMediator;
         }
 
@@ -35,6 +33,6 @@ namespace RestApi.Controllers
             if (accountModel == null)
                 return BadRequest("Account doesn't exist");
             return Created(Request?.Path.Value, accountModel);
-        }
+        }       
     }
 }

@@ -19,11 +19,15 @@ namespace RestApi
              {
                  var endpointConfiguration = new EndpointConfiguration("RestApi");
                  var transport = endpointConfiguration.UseTransport<LearningTransport>();
-                 transport.Routing().RouteToEndpoint(
+                 var routing = transport.Routing();
+                 routing.RouteToEndpoint(
                     assembly: typeof(Domain.RepositoryModels.Account).Assembly,
                     destination: "Worker");
-                 transport.Routing().RouteToEndpoint(
-                    assembly: typeof(PaymentNotificationBase).Assembly,
+                 routing.RouteToEndpoint(
+                    typeof(PaymentNotificationBase),
+                    destination: "Worker");
+                 routing.RouteToEndpoint(
+                    typeof(Invoice),
                     destination: "Worker");
                  endpointConfiguration.SendOnly();
                  return endpointConfiguration;

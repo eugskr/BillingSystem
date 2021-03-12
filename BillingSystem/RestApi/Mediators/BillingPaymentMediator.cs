@@ -37,5 +37,13 @@ namespace RestApi.Mediators
             await _messageSession.Send(account);
             return accountDto;
         }
+
+        public async Task<InvoiceDTO> CreateInvoiceAsync(InvoiceModel invoiceModel)
+        {
+            var invoice = _billingPaymentProvider.CreateInvoice(invoiceModel);
+            var invoiceDto = _mapper.Map<InvoiceDTO>(invoice);
+            await _messageSession.Send(invoice);
+            return invoiceDto;
+        }
     }
 }

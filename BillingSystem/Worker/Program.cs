@@ -15,12 +15,12 @@ namespace Worker
             Console.Title = "Worker";
 
             var endpointConfiguration = new EndpointConfiguration("Worker");
-            endpointConfiguration.UseTransport<LearningTransport>();
-            //endpointConfiguration.UsePersistence<LearningPersistence>();
+            endpointConfiguration.UseTransport<LearningTransport>();            
 
             var serviceCollection = new ServiceCollection();
             serviceCollection.AddScoped<IDbRepository<Domain.RepositoryModels.Account>, DbRepository<Domain.RepositoryModels.Account>>();
             serviceCollection.AddScoped<IDbRepository<PaymentNotificationBase>, DbRepository<PaymentNotificationBase>>();
+            serviceCollection.AddScoped<IDbRepository<Invoice>, DbRepository<Invoice>>();
 
             var endpointWithExternallyManagedServiceProvider = EndpointWithExternallyManagedServiceProvider
             .Create(endpointConfiguration, serviceCollection);
