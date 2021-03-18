@@ -6,6 +6,7 @@ using Infrastructure.Repository;
 using Domain.RepositoryModels;
 using Domain.WebHookNotificationModels;
 
+
 namespace Worker
 {
     class Program
@@ -17,10 +18,12 @@ namespace Worker
             var endpointConfiguration = new EndpointConfiguration("Worker");
             endpointConfiguration.UseTransport<LearningTransport>();            
 
-            var serviceCollection = new ServiceCollection();
+            var serviceCollection =  new ServiceCollection();
             serviceCollection.AddScoped<IDbRepository<Domain.RepositoryModels.Account>, DbRepository<Domain.RepositoryModels.Account>>();
             serviceCollection.AddScoped<IDbRepository<PaymentNotificationBase>, DbRepository<PaymentNotificationBase>>();
             serviceCollection.AddScoped<IDbRepository<Invoice>, DbRepository<Invoice>>();
+            serviceCollection.AddLogging();
+            
 
             var endpointWithExternallyManagedServiceProvider = EndpointWithExternallyManagedServiceProvider
             .Create(endpointConfiguration, serviceCollection);
@@ -35,7 +38,7 @@ namespace Worker
 
                 await endpointInstance.Stop()
                     .ConfigureAwait(false);
-            }              
+            }             
 
            
         }

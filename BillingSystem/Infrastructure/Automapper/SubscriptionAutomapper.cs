@@ -13,25 +13,7 @@ namespace Infrastructure.Automapper
                 .ForMember(dest=> dest.CollectionMethod, 
                 opt=> opt.MapFrom(src=> Constants.MANUAL))
                 .ForPath(dest=> dest.Account.Code,
-                    opt=> opt.MapFrom(src=> src.AccountCode));
-
-            CreateMap<InvoiceModel, PurchaseCreate>()
-                .ForMember(dest => dest.Currency,
-                    opt => opt.MapFrom(src => Constants.UAH))
-                .ForMember(dest => dest.CollectionMethod,
-                    opt => opt.MapFrom(src => Constants.AUTOMATIC))
-                .ForPath(dest => dest.Account,
-                    opt => opt.MapFrom(src => new AccountPurchase
-                    {
-                        Code = src.AccountCode
-                    }))
-                .ForPath(dest => dest.LineItems,
-                    opt => opt.MapFrom(src => new LineItemCreate
-                    {
-                        Type = Constants.CHARGE,
-                        UnitAmount = src.UnitAmmount,
-                        Currency = Constants.UAH
-                    }));
+                    opt=> opt.MapFrom(src=> src.AccountCode));            
         }
     }
 }

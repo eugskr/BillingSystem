@@ -11,7 +11,7 @@ namespace Infrastructure.Repository
         void Delete(string id);
         List<T> GetAllRecords();       
         T GetRecordById(string id);
-        void Update(T record, Guid id);
+        Task Update(T record, Guid id);
         T GetBy(Expression<Func<T, bool>> predicate);
         Task Upsert(T record, Guid id);
     }

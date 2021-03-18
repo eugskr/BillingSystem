@@ -37,7 +37,7 @@ namespace Infrastructure.Repository
             _collection.DeleteOne(filter);
         }
 
-        public void Update(T record, Guid id)
+        public async Task Update(T record, Guid id)
         {
             _collection.ReplaceOne(
                 new BsonDocument("_id", id),

@@ -4,6 +4,7 @@ using Domain.Models;
 using AutoMapper;
 using System.Collections.Generic;
 
+
 namespace Infrastructure.RecurlyProvider
 {
     class RecurlyAdapter : IRecurlyAdapter
@@ -31,23 +32,28 @@ namespace Infrastructure.RecurlyProvider
         {
             return client.CreatePurchase(
                 new PurchaseCreate()
+                {
+                    Account = new AccountPurchase
                     {
-                        Account = new AccountPurchase
-                        {
-                            Code = invoiceModel.AccountCode
-                        },
-                        Currency = Constants.UAH,
-                        CollectionMethod = Constants.AUTOMATIC,
-                        LineItems = new List<LineItemCreate>
+                        Code = invoiceModel.AccountCode
+                    },
+                    Currency = Constants.UAH,
+                    CollectionMethod = Constants.AUTOMATIC,
+                    LineItems = new List<LineItemCreate>
                         {
                             new LineItemCreate
                             {
                                Type = Constants.CHARGE,
-                               UnitAmount = invoiceModel.UnitAmmount,
+                               UnitAmount = invoiceModel.UnitAmount,
                                Currency = Constants.UAH,
                             }
                         },
-                    });
+                });
+        }
+
+        public InvoiceCollection CreateSubscriptionViaPurchase(PurchaseCreate purchaseCreate)
+        {            
+            return client.CreatePurchase(purchaseCreate);
         }
     }
 }

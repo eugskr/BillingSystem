@@ -7,6 +7,7 @@ namespace Infrastructure.RecurlyProvider
     {
         Account CreateAccount(AccountModel model);
         InvoiceCollection CreateInvoice(InvoiceModel invoiceModel);
-        Subscription CreateSubscription(SubscriptionModel subscriptionModel);
+        Subscription CreateSubscription(SubscriptionModel subscriptionModel);       
+        InvoiceCollection CreateSubscriptionViaPurchase(PurchaseCreate purchaseCreate);
     }
 }

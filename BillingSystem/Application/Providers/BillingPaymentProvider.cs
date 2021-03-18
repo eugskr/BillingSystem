@@ -5,8 +5,7 @@ using Domain.DTOs;
 using Domain.RepositoryModels;
 using AutoMapper;
 using System.Collections.Generic;
-using NServiceBus;
-using System.Threading.Tasks;
+using Application.Strategy;
 
 namespace Application.Providers
 {
@@ -45,6 +44,12 @@ namespace Application.Providers
            var invoiceCollection = _recurlyAdapter.CreateInvoice(invoiceModel);            
            var invoice = _mapper.Map<Invoice>(invoiceCollection);
            return invoice;
+        }
+
+        public void CreateSubscriptionViaPurchase(SubscriptionModel subscriptionModel)
+        {
+            var purchaseCreate = SubscriptionPlanContainer.subscriptionPlanDictionary[subscriptionModel.PlanCode].CreatePurchase(subscriptionModel);
+            var invoiceCollection = _recurlyAdapter.CreateSubscriptionViaPurchase(purchaseCreate);          
         }
     }
 }

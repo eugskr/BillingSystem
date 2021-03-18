@@ -2,7 +2,6 @@
 using Infrastructure.Repository;
 using Microsoft.Extensions.Logging;
 using NServiceBus;
-using NServiceBus.Logging;
 using System;
 using System.Threading.Tasks;
 
@@ -11,9 +10,9 @@ namespace Worker
     public class AccountUpdatedHandler : IHandleMessages<Account>
     {
         private readonly IDbRepository<Account> _dbClient;
-        static ILog log = LogManager.GetLogger<Account>();
 
-        public ILogger<AccountUpdatedHandler> _log { get; }
+
+        private readonly ILogger<AccountUpdatedHandler> _log;
 
         public AccountUpdatedHandler(IDbRepository<Account> dbClient, ILogger<AccountUpdatedHandler> log)
         {
@@ -24,16 +23,23 @@ namespace Worker
         {
             try
             {
-                log.Info($"Received Account, AccountCode = {account.Code}");
-                await _dbClient.Upsert(account, account.Id);
-                log.Info($"Saved Account in DB, AccountCode = {account.Code}");
+                _log.LogInformation("Received Accont");
+
+                var accountExisting = _dbClient.GetBy(x => x.Code == account.Code);
+                if (accountExisting == null)
+                    await _dbClient.Insert(account);
+                else
+                    await _dbClient.Update(account, account.Id);
+
+                _log.LogInformation("Saved Accont into DB");
+
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 _log.LogError(e, e.Message);
                 throw;
             }
-          
+
         }
     }
 }

@@ -3,9 +3,6 @@ using AutoMapper;
 using Domain.DTOs;
 using Domain.Models;
 using NServiceBus;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace RestApi.Mediators
@@ -44,6 +41,11 @@ namespace RestApi.Mediators
             var invoiceDto = _mapper.Map<InvoiceDTO>(invoice);
             await _messageSession.Send(invoice);
             return invoiceDto;
+        }
+        public  void CreateSubViaPurchase(SubscriptionModel subscriptionModel)
+        {
+            _billingPaymentProvider.CreateSubscriptionViaPurchase(subscriptionModel);           
+           
         }
     }
 }

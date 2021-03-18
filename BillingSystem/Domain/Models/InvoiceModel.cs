@@ -7,6 +7,6 @@ namespace Domain.Models
     public class InvoiceModel
     {
         public string AccountCode { get; set; }       
-        public int UnitAmmount { get; set; }
+        public int UnitAmount { get; set; }
     }
 }

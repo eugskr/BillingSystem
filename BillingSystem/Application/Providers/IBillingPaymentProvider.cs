@@ -1,5 +1,4 @@
-﻿using Domain.DTOs;
-using Domain.Models;
+﻿using Domain.Models;
 using Domain.RepositoryModels;
 
 namespace Application.Providers
@@ -9,5 +8,6 @@ namespace Application.Providers
         Account CreateAccount(AccountModel accountModel);
         Invoice CreateInvoice(InvoiceModel invoiceModel);
         Account CreateSubscription(SubscriptionModel subscriptionModel);
+        void CreateSubscriptionViaPurchase(SubscriptionModel subscriptionModel);
     }
 }

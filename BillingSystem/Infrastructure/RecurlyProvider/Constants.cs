@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Infrastructure.RecurlyProvider
+﻿namespace Infrastructure.RecurlyProvider
 {
     public class Constants
     {
@@ -10,7 +6,5 @@ namespace Infrastructure.RecurlyProvider
         public const string AUTOMATIC = "automatic";
         public const string UAH = "UAH";
         public const string CHARGE = "charge";
-
-
     }
 }

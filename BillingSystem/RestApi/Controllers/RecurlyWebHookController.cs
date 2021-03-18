@@ -1,12 +1,9 @@
-﻿using Application.Providers;
-using Domain.WebHookNotificationModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using RestApi.Mediators;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Serialization;
 
 namespace RestApi.Controllers
 {

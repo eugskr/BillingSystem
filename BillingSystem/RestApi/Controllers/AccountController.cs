@@ -1,6 +1,5 @@
-﻿using Application.Providers;
-using Domain.Models;
-using Infrastructure.Repository;
+﻿using Domain.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using RestApi.Mediators;
 using System.Threading.Tasks;
@@ -9,6 +8,7 @@ namespace RestApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [Authorize]
     public class AccountController : ControllerBase
     {        
         private readonly IBillingPaymentMediator _billingPaymentMediator;
@@ -21,7 +21,7 @@ namespace RestApi.Controllers
         [HttpPost]
         [Route("CreateAccount")]
         public async Task<IActionResult> CreateAccount(AccountModel accountModel)
-        {
+        {          
             return Created(Request?.Path.Value, await _billingPaymentMediator.CreateAccountAsync(accountModel));
         }
 
@@ -33,6 +33,15 @@ namespace RestApi.Controllers
             if (accountModel == null)
                 return BadRequest("Account doesn't exist");
             return Created(Request?.Path.Value, accountModel);
-        }       
+        }
+
+        [HttpPost]
+        [Route("CreateSubscriptionViaPURCHASE")]
+        public  IActionResult CreateSubscriptionViaPurchase(SubscriptionModel subscriptionModel)
+        {
+             _billingPaymentMediator.CreateSubViaPurchase(subscriptionModel);
+            
+            return Ok();
+        }
     }
 }
