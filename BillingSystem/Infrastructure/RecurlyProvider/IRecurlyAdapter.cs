@@ -6,6 +6,8 @@ namespace Infrastructure.RecurlyProvider
     public interface IRecurlyAdapter
     {
         Account CreateAccount(AccountModel model);
-        Subscription CreateSubscription(SubscriptionModel subscriptionModel);
+        InvoiceCollection CreateInvoice(InvoiceModel invoiceModel);
+        Subscription CreateSubscription(SubscriptionModel subscriptionModel);       
+        InvoiceCollection CreateSubscriptionViaPurchase(PurchaseCreate purchaseCreate);
     }
 }

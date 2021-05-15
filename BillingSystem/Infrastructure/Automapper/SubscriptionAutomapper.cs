@@ -11,9 +11,9 @@ namespace Infrastructure.Automapper
         {
             CreateMap<SubscriptionModel, SubscriptionCreate>()
                 .ForMember(dest=> dest.CollectionMethod, 
-                opt=> opt.MapFrom(src=> Constants.COLLECTION_METHOD))
+                opt=> opt.MapFrom(src=> Constants.MANUAL))
                 .ForPath(dest=> dest.Account.Code,
-                    opt=> opt.MapFrom(src=> src.AccountCode));
+                    opt=> opt.MapFrom(src=> src.AccountCode));            
         }
     }
 }

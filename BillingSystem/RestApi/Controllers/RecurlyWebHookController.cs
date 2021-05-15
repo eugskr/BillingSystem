@@ -1,31 +1,29 @@
-﻿using Application.Providers;
-using Domain.WebHookNotificationModels;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+using RestApi.Mediators;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Xml;
-using System.Xml.Serialization;
 
 namespace RestApi.Controllers
 {
     [Route("api/[controller]")]
-    [ApiController]    
+    [ApiController]
     public class RecurlyWebHookController : ControllerBase
     {
-        private readonly IWebHookNotificationProvider _webHookNotificationProvider;
+        private readonly IWebHookNotificationMediator _webHookNotificationMediator;
 
-        public RecurlyWebHookController(IWebHookNotificationProvider webHookNotificationProvider)
+        public RecurlyWebHookController(IWebHookNotificationMediator webHookNotificationMediator)
         {
-            _webHookNotificationProvider = webHookNotificationProvider;
+            _webHookNotificationMediator = webHookNotificationMediator;
         }
 
         [HttpPost]
         public async Task<IActionResult> HandleWebHook()
         {
             var doc = await ExtractXmlDocFromRequest();
-           
-            _webHookNotificationProvider.ProcessWithXml(doc);
+
+            await _webHookNotificationMediator.ProcessWithXmlAsync(doc);
             return Ok();
         }
 
@@ -36,13 +34,13 @@ namespace RestApi.Controllers
             {
                 await Request?.Body?.CopyToAsync(ms);
                 body = ms.ToArray();
-            }        
-            
+            }
+
             var doc = new XmlDocument();
             doc.LoadXml(Encoding.UTF8.GetString(body));
             return doc;
         }
-           
-        
-    }     
+
+
+    }
 }

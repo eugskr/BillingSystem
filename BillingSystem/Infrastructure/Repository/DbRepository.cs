@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Repository
 {
@@ -25,9 +26,9 @@ namespace Infrastructure.Repository
             return _collection.Find(filter).First();
         }
 
-        public void Insert(T record)
+        public async Task Insert(T record)
         {
-            _collection.InsertOne(record);
+            await _collection.InsertOneAsync(record);
         }
 
         public void Delete(string id)
@@ -36,11 +37,18 @@ namespace Infrastructure.Repository
             _collection.DeleteOne(filter);
         }
 
-        public void Update(T record, Guid id)
+        public async Task Update(T record, Guid id)
         {
             _collection.ReplaceOne(
                 new BsonDocument("_id", id),
                 record);
+        }
+        public async Task Upsert(T record, Guid id)
+        {
+            await _collection.ReplaceOneAsync(
+                new BsonDocument("_id", id),
+                record,
+                new ReplaceOptions { IsUpsert = true });
         }
         public T GetBy(Expression<Func<T, bool>> predicate)
         {

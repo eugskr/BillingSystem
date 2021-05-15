@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Repository
 {
     public interface IDbRepository<T>
     {
-        void Insert(T record);
+        Task Insert(T record);
         void Delete(string id);
         List<T> GetAllRecords();       
         T GetRecordById(string id);
-        void Update(T record, Guid id);
+        Task Update(T record, Guid id);
         T GetBy(Expression<Func<T, bool>> predicate);
+        Task Upsert(T record, Guid id);
     }
 }

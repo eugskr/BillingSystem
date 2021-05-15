@@ -2,6 +2,8 @@
 using Recurly.Resources;
 using Domain.Models;
 using AutoMapper;
+using System.Collections.Generic;
+
 
 namespace Infrastructure.RecurlyProvider
 {
@@ -18,15 +20,40 @@ namespace Infrastructure.RecurlyProvider
 
         public Account CreateAccount(AccountModel accountModel)
         {
-            var accountRequest = _mapper.Map<AccountCreate>(accountModel);
-            return client.CreateAccount(accountRequest);
+            return client.CreateAccount(_mapper.Map<AccountCreate>(accountModel));
         }
 
         public Subscription CreateSubscription(SubscriptionModel subscriptionModel)
-        {             
-            var subscruptionRequest = _mapper.Map<SubscriptionCreate>(subscriptionModel);
-            return client.CreateSubscription(subscruptionRequest);
+        {
+            return client.CreateSubscription(_mapper.Map<SubscriptionCreate>(subscriptionModel));
         }
-       
+
+        public InvoiceCollection CreateInvoice(InvoiceModel invoiceModel)
+        {
+            return client.CreatePurchase(
+                new PurchaseCreate()
+                {
+                    Account = new AccountPurchase
+                    {
+                        Code = invoiceModel.AccountCode
+                    },
+                    Currency = Constants.UAH,
+                    CollectionMethod = Constants.AUTOMATIC,
+                    LineItems = new List<LineItemCreate>
+                        {
+                            new LineItemCreate
+                            {
+                               Type = Constants.CHARGE,
+                               UnitAmount = invoiceModel.UnitAmount,
+                               Currency = Constants.UAH,
+                            }
+                        },
+                });
+        }
+
+        public InvoiceCollection CreateSubscriptionViaPurchase(PurchaseCreate purchaseCreate)
+        {            
+            return client.CreatePurchase(purchaseCreate);
+        }
     }
 }
