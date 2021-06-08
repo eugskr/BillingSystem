@@ -1,31 +1,26 @@
-﻿using Domain.Models;
+﻿using Application.Extensions;
+using Domain.Models;
+using Infrastructure.RecurlyProvider;
 using Recurly.Resources;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Application.Strategy
 {
-    public class AnnualSubscriptionPlan : ISubscriptionStrategy
-    {
-        public PurchaseCreate CreatePurchase(SubscriptionModel subscriptionModel)
+    public class AnnualSubscriptionPlan: ISubscriptionStrategy
+    {               
+        public PurchaseCreate CreatePurchase(Domain.Models.SubscriptionCreate subscriptionModel)
         {
-            return new PurchaseCreate()
-            {
-                Currency = Constants.UAH,
-                CollectionMethod = Constants.MANUAL,
-                Account = new AccountPurchase()
-                {
-                    Code = subscriptionModel.AccountCode,
-                },
-                Subscriptions = new List<SubscriptionPurchase>()
-                {
-                    new SubscriptionPurchase()
-                    {
-                        PlanCode = subscriptionModel.PlanCode,
-                        UnitAmount = subscriptionModel.UnitAmount,
-                    }
-                },
-             
-            };
+            
+            var purchaseCreate = new PurchaseCreateBuilder()
+                .BuildAccount(subscriptionModel.AccountCode)
+                .BuildCollectionMethod()
+                .BuildCurrency()
+                .BuildSubscriptions(Constants.MONTHLY_PLAN, subscriptionModel.UnitAmount)
+                .GetPurchaseCreate();
+
+           
+            return purchaseCreate;
         }
     }
 }

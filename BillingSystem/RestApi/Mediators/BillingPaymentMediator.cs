@@ -1,6 +1,6 @@
 ﻿using Application.Providers;
 using AutoMapper;
-using Domain.DTOs;
+using Domain.Responses;
 using Domain.Models;
 using NServiceBus;
 using System.Threading.Tasks;
@@ -18,34 +18,28 @@ namespace RestApi.Mediators
             _billingPaymentProvider = billingPaymentProvider;
             _mapper = mapper;
         }
-        public async Task<AccountDTO> CreateAccountAsync(AccountModel accountModel)
+        public async Task<AccountResponse> CreateAccountAsync(AccountCreate accountModel)
         {
             var account = _billingPaymentProvider.CreateAccount(accountModel);
-            var accountDto = _mapper.Map<AccountDTO>(account);          
+            var accountResponse = _mapper.Map<AccountResponse>(account);          
             await _messageSession.Send(account); 
-            return accountDto;
+            return accountResponse;
         }
-        public async Task<AccountDTO> CreateSubscriptionAsync(SubscriptionModel subscriptionModel)
+        public async Task<AccountResponse> CreateSubscriptionAsync(SubscriptionCreate subscriptionModel)
         {
             var account = _billingPaymentProvider.CreateSubscription(subscriptionModel);
             if (account == null)
                 return null;
-            var accountDto = _mapper.Map<AccountDTO>(account);
+            var accountResponse = _mapper.Map<AccountResponse>(account);
             await _messageSession.Send(account);
-            return accountDto;
-        }
-
-        public async Task<InvoiceDTO> CreateInvoiceAsync(InvoiceModel invoiceModel)
+            return accountResponse;
+        }              
+        public async Task<AccountResponse> CreateSubscription(SubscriptionCreate subscriptionModel)
         {
-            var invoice = _billingPaymentProvider.CreateInvoice(invoiceModel);
-            var invoiceDto = _mapper.Map<InvoiceDTO>(invoice);
-            await _messageSession.Send(invoice);
-            return invoiceDto;
-        }
-        public  void CreateSubViaPurchase(SubscriptionModel subscriptionModel)
-        {
-            _billingPaymentProvider.CreateSubscriptionViaPurchase(subscriptionModel);           
-           
+            var account = _billingPaymentProvider.CreateSubscriptionViaPurchase(subscriptionModel);
+            await _messageSession.Send(account);
+            var accountResponse = _mapper.Map<AccountResponse>(account);
+            return accountResponse;
         }
     }
 }

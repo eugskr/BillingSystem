@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Domain.Models;
 using Recurly.Resources;
 
 namespace Infrastructure.Automapper
@@ -8,7 +7,7 @@ namespace Infrastructure.Automapper
     {
         public AccountAutomapper()
         {
-            CreateMap<AccountModel, AccountCreate>();           
+            CreateMap<Domain.Models.AccountCreate, AccountCreate>();           
         }
     }
 }

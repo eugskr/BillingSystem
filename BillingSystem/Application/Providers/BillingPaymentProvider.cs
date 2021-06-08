@@ -1,7 +1,7 @@
 ﻿using Domain.Models;
 using Infrastructure.RecurlyProvider;
 using Infrastructure.Repository;
-using Domain.DTOs;
+using Domain.Responses;
 using Domain.RepositoryModels;
 using AutoMapper;
 using System.Collections.Generic;
@@ -22,34 +22,32 @@ namespace Application.Providers
             _mapper = mapper;    
         }
       
-        public Account CreateAccount(AccountModel accountModel)
+        public Account CreateAccount(AccountCreate accountModel)
         {            
             var accountCreated = _mapper.Map<Account>(_recurlyAdapter.CreateAccount(accountModel));                     
             return accountCreated;
         }
 
-        public Account CreateSubscription(SubscriptionModel subscriptionModel)
+        public Account CreateSubscription(SubscriptionCreate subscriptionModel)
         {           
             var account = _accountRepository.GetBy(x => x.Code == subscriptionModel.AccountCode);
             if (account == null)
                 return null;
-            var subscriptionVM = _mapper.Map<SubscriptionDTO>(_recurlyAdapter.CreateSubscription(subscriptionModel));
-            account.Subscriptions = account.Subscriptions ?? new List<SubscriptionDTO>();
-            account.Subscriptions.Add(subscriptionVM);
+            var subscriptionDto = _mapper.Map<SubscriptionResponse>(_recurlyAdapter.CreateSubscription(subscriptionModel));
+            account.Subscriptions = account.Subscriptions ?? new List<SubscriptionResponse>();
+            account.Subscriptions.Add(subscriptionDto);
             return account;                   
-        }
+        }      
 
-        public Invoice CreateInvoice(InvoiceModel invoiceModel)
-        {
-           var invoiceCollection = _recurlyAdapter.CreateInvoice(invoiceModel);            
-           var invoice = _mapper.Map<Invoice>(invoiceCollection);
-           return invoice;
-        }
-
-        public void CreateSubscriptionViaPurchase(SubscriptionModel subscriptionModel)
+        public Account CreateSubscriptionViaPurchase(SubscriptionCreate subscriptionModel)
         {
             var purchaseCreate = SubscriptionPlanContainer.subscriptionPlanDictionary[subscriptionModel.PlanCode].CreatePurchase(subscriptionModel);
-            var invoiceCollection = _recurlyAdapter.CreateSubscriptionViaPurchase(purchaseCreate);          
+            var invoiceCollection = _recurlyAdapter.CreateSubscriptionViaPurchase(purchaseCreate);
+            var invoiceDto = _mapper.Map<InvoiceResponse>(invoiceCollection);
+            var account = _accountRepository.GetBy(x => x.Code == subscriptionModel.AccountCode);
+            account.Invoices = account.Invoices ?? new List<InvoiceResponse>();
+            account.Invoices.Add(invoiceDto);
+            return account;
         }
     }
 }

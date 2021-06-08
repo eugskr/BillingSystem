@@ -12,7 +12,7 @@ namespace Infrastructure.Extensions
         {
             services.AddScoped<IDbRepository<Domain.RepositoryModels.Account>, DbRepository<Domain.RepositoryModels.Account>>();
             services.AddScoped<IDbRepository<PaymentNotificationBase>, DbRepository<PaymentNotificationBase>>();
-            services.AddScoped<IDbRepository<Invoice>, DbRepository<Invoice>>();
+            
             services.AddTransient<IRecurlyAdapter,RecurlyAdapter>();
             return services;
         }

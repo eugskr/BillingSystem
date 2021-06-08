@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Domain.Models;
 using Recurly.Resources;
 using Infrastructure.RecurlyProvider;
 
@@ -9,7 +8,7 @@ namespace Infrastructure.Automapper
     {
         public SubscriptionAutomapper()
         {
-            CreateMap<SubscriptionModel, SubscriptionCreate>()
+            CreateMap<Domain.Models.SubscriptionCreate, SubscriptionCreate>()
                 .ForMember(dest=> dest.CollectionMethod, 
                 opt=> opt.MapFrom(src=> Constants.MANUAL))
                 .ForPath(dest=> dest.Account.Code,

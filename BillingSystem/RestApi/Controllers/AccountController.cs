@@ -8,7 +8,7 @@ namespace RestApi.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    [Authorize]
+    //[Authorize]
     public class AccountController : ControllerBase
     {        
         private readonly IBillingPaymentMediator _billingPaymentMediator;
@@ -20,14 +20,14 @@ namespace RestApi.Controllers
 
         [HttpPost]
         [Route("CreateAccount")]
-        public async Task<IActionResult> CreateAccount(AccountModel accountModel)
+        public async Task<IActionResult> CreateAccount(AccountCreate accountModel)
         {          
             return Created(Request?.Path.Value, await _billingPaymentMediator.CreateAccountAsync(accountModel));
         }
 
         [HttpPost]
         [Route("CreateSubscription")]
-        public async Task<IActionResult> CreateSubscription(SubscriptionModel subscriptionModel)
+        public async Task<IActionResult> CreateSubscription(SubscriptionCreate subscriptionModel)
         {
             var accountModel = await _billingPaymentMediator.CreateSubscriptionAsync(subscriptionModel);
             if (accountModel == null)
@@ -37,9 +37,9 @@ namespace RestApi.Controllers
 
         [HttpPost]
         [Route("CreateSubscriptionViaPURCHASE")]
-        public  IActionResult CreateSubscriptionViaPurchase(SubscriptionModel subscriptionModel)
+        public  IActionResult CreateSubscriptionViaPurchase(SubscriptionCreate subscriptionModel)
         {
-             _billingPaymentMediator.CreateSubViaPurchase(subscriptionModel);
+             _billingPaymentMediator.CreateSubscription(subscriptionModel);
             
             return Ok();
         }

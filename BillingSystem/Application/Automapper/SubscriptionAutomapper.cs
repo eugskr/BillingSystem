@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using Domain.DTOs;
+using Domain.Responses;
 using Recurly.Resources;
 
 namespace Application.Automapper
@@ -8,7 +8,7 @@ namespace Application.Automapper
     {
         public SubscriptionAutomapper()
         {
-            CreateMap<Subscription, SubscriptionDTO>()
+            CreateMap<Subscription, SubscriptionResponse>()
                 .ForMember(pts => pts.PlanCode, opt => opt.MapFrom(ps=>ps.Plan.Code));         
         }
     }

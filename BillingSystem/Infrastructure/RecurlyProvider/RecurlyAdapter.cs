@@ -18,39 +18,16 @@ namespace Infrastructure.RecurlyProvider
             _mapper = mapper;
         }
 
-        public Account CreateAccount(AccountModel accountModel)
+        public Account CreateAccount(Domain.Models.AccountCreate accountModel)
         {
-            return client.CreateAccount(_mapper.Map<AccountCreate>(accountModel));
+            return client.CreateAccount(_mapper.Map<Recurly.Resources.AccountCreate>(accountModel));
         }
 
-        public Subscription CreateSubscription(SubscriptionModel subscriptionModel)
+        public Subscription CreateSubscription(Domain.Models.SubscriptionCreate subscriptionModel)
         {
-            return client.CreateSubscription(_mapper.Map<SubscriptionCreate>(subscriptionModel));
+            return client.CreateSubscription(_mapper.Map<Recurly.Resources.SubscriptionCreate>(subscriptionModel));
         }
-
-        public InvoiceCollection CreateInvoice(InvoiceModel invoiceModel)
-        {
-            return client.CreatePurchase(
-                new PurchaseCreate()
-                {
-                    Account = new AccountPurchase
-                    {
-                        Code = invoiceModel.AccountCode
-                    },
-                    Currency = Constants.UAH,
-                    CollectionMethod = Constants.AUTOMATIC,
-                    LineItems = new List<LineItemCreate>
-                        {
-                            new LineItemCreate
-                            {
-                               Type = Constants.CHARGE,
-                               UnitAmount = invoiceModel.UnitAmount,
-                               Currency = Constants.UAH,
-                            }
-                        },
-                });
-        }
-
+      
         public InvoiceCollection CreateSubscriptionViaPurchase(PurchaseCreate purchaseCreate)
         {            
             return client.CreatePurchase(purchaseCreate);

@@ -3,7 +3,7 @@ using System.Text.Json.Serialization;
 
 namespace Domain.Models
 {
-    public class SubscriptionModel
+    public class SubscriptionCreate
     {                 
         public string AccountCode { get; set; }        
         public string PlanCode { get; set; }

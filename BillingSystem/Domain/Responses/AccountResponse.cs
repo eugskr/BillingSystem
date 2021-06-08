@@ -2,13 +2,15 @@
 using System;
 using System.Collections.Generic;
 
-namespace Domain.DTOs
+namespace Domain.Responses
 {
-    public class AccountDTO
+    public class AccountResponse
     {       
         public string Code { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
-        public IList<SubscriptionDTO> Subscriptions { get; set; }
+        public IList<SubscriptionResponse> Subscriptions { get; set; }
+        public IList<InvoiceResponse> Invoices { get; set; }
+
     }
 }

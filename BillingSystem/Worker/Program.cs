@@ -21,7 +21,7 @@ namespace Worker
             var serviceCollection =  new ServiceCollection();
             serviceCollection.AddScoped<IDbRepository<Domain.RepositoryModels.Account>, DbRepository<Domain.RepositoryModels.Account>>();
             serviceCollection.AddScoped<IDbRepository<PaymentNotificationBase>, DbRepository<PaymentNotificationBase>>();
-            serviceCollection.AddScoped<IDbRepository<Invoice>, DbRepository<Invoice>>();
+           
             serviceCollection.AddLogging();
             
 
