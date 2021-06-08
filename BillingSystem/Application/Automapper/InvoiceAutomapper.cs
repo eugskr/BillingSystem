@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
-using Domain.DTOs;
+using Domain.Responses;
+using Domain.RepositoryModels;
 using Recurly.Resources;
 
 namespace Application.Automapper
@@ -9,18 +10,17 @@ namespace Application.Automapper
         public InvoiceAutomapper()
         {
 
-            CreateMap<InvoiceCollection, Domain.RepositoryModels.Invoice>()
+            CreateMap<InvoiceCollection, InvoiceResponse>()
                 .ForMember(dest => dest.AccountCode,
-                    opt => opt.MapFrom(src => src.ChargeInvoice.Account.Code))
-                .ForMember(dest => dest.Ammount,
-                    opt => opt.MapFrom(src => src.ChargeInvoice.Paid))
+                    opt => opt.MapFrom(src => src.ChargeInvoice.Account.Code))                
                 .ForMember(dest => dest.Currency,
                     opt => opt.MapFrom(src => src.ChargeInvoice.Currency))
                 .ForMember(dest => dest.InvoiceId,
                     opt => opt.MapFrom(src => src.ChargeInvoice.Id))
-                .ForMember(s => s.Id, opt => opt.Ignore()); 
-
-            CreateMap<Domain.RepositoryModels.Invoice, InvoiceDTO>();
+                .ForMember(dest => dest.Items,
+                    opt => opt.MapFrom(src => src.ChargeInvoice.LineItems.Data));
+            CreateMap<LineItem, ChargeItem>();
+            
         }
     }
 }

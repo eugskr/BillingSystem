@@ -5,6 +5,6 @@ namespace Application.Strategy
 {
     public interface ISubscriptionStrategy
     {
-        PurchaseCreate CreatePurchase(SubscriptionModel subscriptionModel);
+        PurchaseCreate CreatePurchase(Domain.Models.SubscriptionCreate subscriptionModel);
     }
 }

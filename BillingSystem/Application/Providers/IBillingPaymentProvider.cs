@@ -5,9 +5,9 @@ namespace Application.Providers
 {
     public interface IBillingPaymentProvider
     {
-        Account CreateAccount(AccountModel accountModel);
-        Invoice CreateInvoice(InvoiceModel invoiceModel);
-        Account CreateSubscription(SubscriptionModel subscriptionModel);
-        void CreateSubscriptionViaPurchase(SubscriptionModel subscriptionModel);
+        Account CreateAccount(AccountCreate accountModel);
+        //Invoice CreateInvoice(InvoiceCreate invoiceModel);
+        Account CreateSubscription(SubscriptionCreate subscriptionModel);
+        Account CreateSubscriptionViaPurchase(SubscriptionCreate subscriptionModel);
     }
 }

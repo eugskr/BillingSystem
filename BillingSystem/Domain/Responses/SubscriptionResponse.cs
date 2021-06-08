@@ -1,9 +1,9 @@
 ﻿using Domain.Models;
 using System.ComponentModel;
 
-namespace Domain.DTOs
+namespace Domain.Responses
 {
-    public class SubscriptionDTO
+    public class SubscriptionResponse
     {
         public int Id { get; set; }
         public string PlanCode { get; set; }

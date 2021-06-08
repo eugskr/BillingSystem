@@ -26,9 +26,6 @@ namespace RestApi
                  routing.RouteToEndpoint(
                     typeof(PaymentNotificationBase),
                     destination: "Worker");
-                 routing.RouteToEndpoint(
-                    typeof(Invoice),
-                    destination: "Worker");
                  endpointConfiguration.SendOnly();
                  return endpointConfiguration;
              })

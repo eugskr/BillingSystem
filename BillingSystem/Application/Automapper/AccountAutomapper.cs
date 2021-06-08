@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using Domain.DTOs;
-using Domain.Models;
+using Domain.Responses;
 using Domain.RepositoryModels;
 using Recurly.Resources;
 
@@ -12,8 +11,8 @@ namespace Application.Automapper
         {
             CreateMap <Recurly.Resources.Account, Domain.RepositoryModels.Account> ()
                 .ForMember(s=>s.Id, opt=>opt.Ignore());
-            CreateMap<Domain.RepositoryModels.Account, AccountDTO>();
-            CreateMap<AccountModel, AccountCreate>();
+            CreateMap<Domain.RepositoryModels.Account, AccountResponse>();
+            CreateMap<Domain.Models.AccountCreate, AccountCreate>();
         }
     }
 }

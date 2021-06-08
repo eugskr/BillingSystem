@@ -9,20 +9,20 @@ namespace Application.Strategy
         {
             subscriptionPlanDictionary = new Dictionary<string, ISubscriptionStrategy>
             {
-                {
-                    "monthly_plan",
+                {                    
+                    Constants.MONTHLY_PLAN,
                     new MonthlySubscriptionPlan()
                 },
                 {
-                    "quarterly_plan",
+                    Constants.QUARTETLY_PLAN,
                     new QuarterlySubscriptionPlan()
                 },
                 {
-                    "biannual_plan",
+                    Constants.BIANNUAL_PLAN,
                     new BiAnnualSubscriptionPlan()
                 },
                 {
-                    "annual_plan",
+                    Constants.ANNUAL_PLAN,
                     new AnnualSubscriptionPlan()
                 },
             };

@@ -1,41 +1,27 @@
-﻿using Domain.Models;
+﻿using Application.Extensions;
+using Domain.Models;
+using Infrastructure.RecurlyProvider;
 using Recurly.Resources;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Application.Strategy
 {
     public class BiAnnualSubscriptionPlan : ISubscriptionStrategy
     {
-        public PurchaseCreate CreatePurchase(SubscriptionModel subscriptionModel)
+        public PurchaseCreate CreatePurchase(Domain.Models.SubscriptionCreate subscriptionModel)
         {
-            return new PurchaseCreate()
-            {
-                Currency = Constants.UAH,
-                CollectionMethod = Constants.MANUAL,
-                Account = new AccountPurchase()
-                {
-                    Code = subscriptionModel.AccountCode,
-                },
-                Subscriptions = new List<SubscriptionPurchase>()
-                {
-                    new SubscriptionPurchase()
-                    {
-                        PlanCode = subscriptionModel.PlanCode,
-                        UnitAmount = subscriptionModel.UnitAmount/2,
+            (int recurringPayment, int remainderPayment) = (subscriptionModel.UnitAmount, Constants.BiAnnualPayment).RecurringAndRemainderPaymentCalc();
+            var purchaseCreate = new PurchaseCreateBuilder()
+                .BuildAccount(subscriptionModel.AccountCode)
+                .BuildCollectionMethod()
+                .BuildCurrency()
+                .BuildSubscriptions(Constants.BIANNUAL_PLAN, recurringPayment);
 
-                    }
-                },
-                LineItems = new List<LineItemCreate>
-                        {
-                            new LineItemCreate
-                            {
-                               Type = Constants.CHARGE,
-                               UnitAmount = subscriptionModel.UnitAmount-(subscriptionModel.UnitAmount/2)*2,
-                               Currency = Constants.UAH,
-                               Description="Remainder",
-                            }
-                        },
-            };
+            purchaseCreate = remainderPayment > 0 ?
+                purchaseCreate.BuildLineItems(remainderPayment, Constants.REMAINDER) :
+                purchaseCreate;
+            return purchaseCreate.GetPurchaseCreate();
         }
     }
 }

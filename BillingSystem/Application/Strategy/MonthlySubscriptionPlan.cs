@@ -1,51 +1,27 @@
-﻿using Domain.Models;
+﻿using Application.Extensions;
+using Domain.Models;
+using Infrastructure.RecurlyProvider;
 using Recurly.Resources;
-using System.Collections.Generic;
 
 namespace Application.Strategy
 {
     public class MonthlySubscriptionPlan : ISubscriptionStrategy
-    {
-        public PurchaseCreate CreatePurchase(SubscriptionModel subscriptionModel)
+    {          
+        public PurchaseCreate CreatePurchase(Domain.Models.SubscriptionCreate subscriptionModel)
         {
-            return new PurchaseCreate()
-            {
-                Currency = Constants.UAH,
-                CollectionMethod = Constants.MANUAL,
-                Account = new AccountPurchase()
-                {
-                    Code = subscriptionModel.AccountCode,
-                },
-                Subscriptions = new List<SubscriptionPurchase>()
-                {
-                    new SubscriptionPurchase()
-                    {
-                        PlanCode = subscriptionModel.PlanCode,
-                        UnitAmount = subscriptionModel.UnitAmount/12,
+            (int recurringPayment, int remainderPayment) = (subscriptionModel.UnitAmount, Constants.MonthlyPayment).RecurringAndRemainderPaymentCalc();
 
-                    }
-                },
-                LineItems = new List<LineItemCreate>
-                        {
-                            new LineItemCreate
-                            {
-                               Type = Constants.CHARGE,
-                               UnitAmount = subscriptionModel.UnitAmount/12,
-                               Currency = Constants.UAH,
-                               Description="Last Month",
-                            },
-                            new LineItemCreate
-                            {
-                               Type = Constants.CHARGE,
-                               UnitAmount = subscriptionModel.UnitAmount-(subscriptionModel.UnitAmount/12)*12,
-                               Currency = Constants.UAH,
-                               Description="Remainder",
-                            }
-                        },
-            };
-            
+            var purchaseCreate = new PurchaseCreateBuilder()
+                .BuildAccount(subscriptionModel.AccountCode)
+                .BuildCollectionMethod()
+                .BuildCurrency()
+                .BuildSubscriptions(Constants.MONTHLY_PLAN, recurringPayment)
+                .BuildLineItems(recurringPayment, Constants.LAST_MONTH);
+
+            purchaseCreate = remainderPayment > 0 ?
+                purchaseCreate.BuildLineItems(remainderPayment, Constants.REMAINDER) :
+                purchaseCreate;
+            return purchaseCreate.GetPurchaseCreate();
         }
-
-        
     }
 }
